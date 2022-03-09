@@ -5,3 +5,4 @@ okhttp3.Request
 okhttp3.RequestBody
 okhttp3.Response
 okhttp3.Dispatcher
+okhttp3.ConnectionPool
