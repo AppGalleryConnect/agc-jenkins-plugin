@@ -7,6 +7,7 @@ import hudson.Launcher;
 import hudson.model.AbstractProject;
 import hudson.model.Run;
 import hudson.model.TaskListener;
+import hudson.remoting.ClassFilter;
 import hudson.tasks.BuildStepDescriptor;
 import hudson.tasks.Builder;
 import hudson.util.FormValidation;
@@ -53,12 +54,13 @@ public class AppGalleryUploadBuilder extends Builder implements SimpleBuildStep 
     }
     
     @DataBoundConstructor
-    public AppGalleryUploadBuilder(String path, String secret, String cliendId, String appId, String suffix) {
+    public AppGalleryUploadBuilder(String path, String secret, String clientId, String appId, String suffix) {
         this.path = path;
         this.secret = secret;
-        this.clientId = cliendId;
+        this.clientId = clientId;
         this.appId = appId;
         this.suffix = suffix;
+        ClassFilter.setDefault(ClassFilter.NONE);
     }
     
     @Override
