@@ -4,7 +4,7 @@
         <f:textbox />
     </f:entry>
     <f:entry title="Secret" field="secret">
-        <f:textbox />
+        <f:password />
     </f:entry>
     <f:entry title="ClientID" field="clientId">
         <f:textbox />
