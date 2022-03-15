@@ -11,6 +11,7 @@ import hudson.remoting.ClassFilter;
 import hudson.tasks.BuildStepDescriptor;
 import hudson.tasks.Builder;
 import hudson.util.FormValidation;
+import hudson.util.Secret;
 import jenkins.tasks.SimpleBuildStep;
 import okhttp3.*;
 import org.jenkinsci.Symbol;
@@ -28,14 +29,15 @@ public class AppGalleryUploadBuilder extends Builder implements SimpleBuildStep 
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
     OkHttpClient client = new OkHttpClient();
 
-    private final String path, secret, clientId, appId, suffix;
+    private final String path, clientId, appId, suffix;
+    private final Secret secret;
 
     public String getPath() {
         return path;
     }
 
     public String getSecret() {
-        return secret;
+        return secret.getPlainText();
     }
 
     public String getClientId() {
@@ -51,7 +53,7 @@ public class AppGalleryUploadBuilder extends Builder implements SimpleBuildStep 
     }
 
     @DataBoundConstructor
-    public AppGalleryUploadBuilder(String path, String secret, String clientId, String appId, String suffix) {
+    public AppGalleryUploadBuilder(String path, Secret secret, String clientId, String appId, String suffix) {
         this.path = path;
         this.secret = secret;
         this.clientId = clientId;
