@@ -31,9 +31,14 @@ public class AppGalleryUploadBuilder extends Builder implements SimpleBuildStep 
 
     private final String path, clientId, appId, suffix;
     private final Secret secret;
+    private FilePath workspaceFilePath;
 
     public String getPath() {
         return path;
+    }
+
+    public String getWorkspacePath() {
+        return workspaceFilePath.toString();
     }
 
     public String getSecret() {
@@ -66,7 +71,7 @@ public class AppGalleryUploadBuilder extends Builder implements SimpleBuildStep 
     public void perform(Run<?, ?> run, FilePath workspace, EnvVars env, Launcher launcher, TaskListener listener) throws InterruptedException, IOException {
 
         listener.getLogger().println("Starting Upload");
-
+        workspaceFilePath = workspace.child(getPath());
         String accessToken = getAccessToken();
         listener.getLogger().println("Got Access Token");
 
@@ -185,7 +190,7 @@ public class AppGalleryUploadBuilder extends Builder implements SimpleBuildStep 
 
     String uploadFile(String url, String authHeader, String fileAuthCode, TaskListener listener) throws IOException {
 
-        File file = new File(getPath());
+        File file = new File(getWorkspacePath());
         MediaType mediaType = MediaType.parse("application/vnd.android.package-archive");
         RequestBody requestFileBody = RequestBody.create(mediaType, file);
         if (file.exists())
