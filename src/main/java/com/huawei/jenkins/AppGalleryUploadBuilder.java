@@ -30,7 +30,7 @@ public class AppGalleryUploadBuilder extends Builder implements SimpleBuildStep 
 
     private final String path, clientId, appId, suffix;
     private final Secret secret;
-    private FilePath workspaceFilePath;
+    private transient FilePath workspaceFilePath;
 
     public String getPath() {
         return path;
@@ -40,8 +40,8 @@ public class AppGalleryUploadBuilder extends Builder implements SimpleBuildStep 
         return workspaceFilePath;
     }
 
-    public String getSecret() {
-        return secret.getPlainText();
+    public Secret getSecret() {
+        return secret;
     }
 
     public String getClientId() {
@@ -122,7 +122,7 @@ public class AppGalleryUploadBuilder extends Builder implements SimpleBuildStep 
     String getAccessToken() throws IOException {
         JSONObject authJson = new JSONObject();
         authJson.put("client_id", getClientId());
-        authJson.put("client_secret", getSecret());
+        authJson.put("client_secret", getSecret().getPlainText());
         authJson.put("grant_type", "client_credentials");
 
         String jsonString = authJson.toString();
