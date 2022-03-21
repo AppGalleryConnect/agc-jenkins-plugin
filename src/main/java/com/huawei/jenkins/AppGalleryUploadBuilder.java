@@ -20,7 +20,6 @@ import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
 
 import javax.servlet.ServletException;
-import java.io.File;
 import java.io.IOException;
 import java.text.MessageFormat;
 
@@ -37,8 +36,8 @@ public class AppGalleryUploadBuilder extends Builder implements SimpleBuildStep 
         return path;
     }
 
-    public String getWorkspacePath() {
-        return workspaceFilePath.toString();
+    public FilePath getWorkspacePath() {
+        return workspaceFilePath;
     }
 
     public String getSecret() {
@@ -188,13 +187,14 @@ public class AppGalleryUploadBuilder extends Builder implements SimpleBuildStep 
         }
     }
 
-    String uploadFile(String url, String authHeader, String fileAuthCode, TaskListener listener) throws IOException {
+    String uploadFile(String url, String authHeader, String fileAuthCode, TaskListener listener) throws IOException, InterruptedException {
 
-        File file = new File(getWorkspacePath());
+        listener.getLogger().println("Application File: " + getWorkspacePath().toString());
+        if (!getWorkspacePath().exists()) {
+            throw new IOException(getWorkspacePath().toString() + ": File does not exist!");
+        }
         MediaType mediaType = MediaType.parse("application/vnd.android.package-archive");
-        RequestBody requestFileBody = RequestBody.create(mediaType, file);
-        if (file.exists())
-            listener.getLogger().println("Application File: " + file.getAbsolutePath());
+        RequestBody requestFileBody = RequestBody.create(mediaType, getWorkspacePath().read().toString().getBytes());
 
         RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
                 .addFormDataPart("file", "upload.apk", requestFileBody)
