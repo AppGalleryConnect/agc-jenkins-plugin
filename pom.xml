@@ -9,7 +9,7 @@
     </parent>
     <groupId>com.huawei.jenkins</groupId>
     <artifactId>agc-app-upload</artifactId>
-    <version>1.0</version>
+    <version>1.1-SNAPSHOT</version>
     <packaging>hpi</packaging>
     <name>AppGallery Connect App Upload</name>
     <url>https://github.com/jenkinsci/${project.artifactId}-plugin</url>
